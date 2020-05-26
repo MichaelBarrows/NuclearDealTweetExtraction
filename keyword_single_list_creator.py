@@ -35,8 +35,8 @@ def word_extractor(list_of_terms):
 def single_list_generator():
     df = helpers.load_dataset(ds.output_data + "keywords/original_keywords.csv")
     list_of_terms = df.keywords.tolist()
-    tagged_terms = word_extractor(list_of_terms)
-    list_df = pd.DataFrame(tagged_terms, columns=["keyword"])
+    individual_terms = word_extractor(list_of_terms)
+    list_df = pd.DataFrame(individual_terms, columns=["keyword"])
     output_dir = ds.output_data + "keywords/"
     helpers.path_checker(output_dir)
     output_file = output_dir + "keywords_single_list.csv"
