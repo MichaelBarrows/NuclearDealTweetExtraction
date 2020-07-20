@@ -4,19 +4,47 @@ import pandas as pd
 import os
 import datetime as dt
 
-def match_checker(matches, tweets, storage, tweet_ids, file, d_type):
-    for index, row in tweets.iterrows():
-        if row.tweetid in tweet_ids:
-            for matches_index, matches_row in matches.iterrows():
-                if row.tweetid == matches_row.tweet_id:
-                    tweets.matches.at[index] = str(matches_row.matches)
-                    tweets.source_file.at[index] = file
-                    temp_df = tweets[tweets.tweetid == row.tweetid]
-                    storage = pd.concat([storage, temp_df])
-                    if len(storage) % 100 == 0:
-                        print("        -", str(len(storage)), "/", str(len(matches)), d_type, file.split("/")[1])
+# match_extractor()
+# parameters:
+#   matches : DataFrame - dataframe containing tweet ids and keywords matched
+#   tweets : DataFrame - dataframe containing all of the english tweets (original)
+#   storage : DataFrame - empty dataframe for storing extracted tweets
+#   file : string - filename that the tweets originate from
+#   d_type : string - either contains "generic" or "specific" - used for console
+#       output
+# returns:
+#   storage : DataFrame - modified dataframe with extracted tweets
+# description:
+#   This function loops over each match and extracts the original tweet into a
+#       dataframe, adding it to a list of dataframes to be merged. The tweet
+#       also has a filename added to the filename column and the matched
+#       keywords.
+def match_extractor(matches, tweets, storage, file, d_type):
+    temp_store = []
+    counter = 0
+    temp_store.append(storage)
+    for match_index, match_row in matches.iterrows():
+        temp_row = tweets[tweets.tweetid == match_row.tweet_id]
+        for index, row in temp_row.iterrows():
+            temp_row.matches.at[index] = str(match_row.matches)
+            temp_row.source_file.at[index] = file
+        temp_store.append(temp_row)
+        counter += 1
+        print("        -", str(counter), "/", str(len(matches)), d_type, file.split("/")[1])
+    storage = pd.concat(temp_store)
     return storage
 
+# tweet_extractor()
+# parameters:
+#   None
+# returns:
+#   files_created_generic : list - list of file names for generic matches
+#   files_created_specific : list - list of file names for specific matches
+# description:
+#   This function creates additional columns on the dataframe containing the
+#       original tweets (does not modify actual file), calls the match_extractor()
+#       function to extract the tweet and stores the extracted tweets in a new
+#       CSV file.
 def tweet_extractor():
     files_created_generic = []
     files_created_specific = []
@@ -31,14 +59,16 @@ def tweet_extractor():
             columns.append(h)
         columns.append("matches")
         columns.append("source_file")
+        columns.append("month")
         columns.append("year")
         df["matches"] = ""
         df["source_file"] = ""
         df["tweet_time"] = df["tweet_time"].astype("datetime64")
+        df["month"] = df["tweet_time"].dt.month
         df["year"] = df["tweet_time"].dt.year
         specific_tweets, generic_tweets = pd.DataFrame(columns = columns), pd.DataFrame(columns = columns)
-        specific_tweets = match_checker(specific_df, df, specific_tweets, specific_df['tweet_id'].tolist(), file, "specific")
-        generic_tweets = match_checker(generic_df, df, generic_tweets, generic_df['tweet_id'].tolist(), file, "generic")
+        specific_tweets = match_extractor(specific_df, df, specific_tweets, file, "specific")
+        generic_tweets = match_extractor(generic_df, df, generic_tweets, file, "generic")
         output_data_path = ds.output_data + "first_dataset_extraction/"
         dataset = file.split("/")[0]
         filename = file.split("/")[1]
@@ -54,6 +84,15 @@ def tweet_extractor():
         files_created_generic.append(generic_path + filename)
     return files_created_generic, files_created_specific
 
+# run()
+# parameters:
+#   None
+# returns:
+#   None
+# description:
+#   This function is called to run the code in this file (by calling the
+#       tweet_extractor() function) and generates console output detailing the
+#       purpose of the file, its progress and output files created.
 def run():
         print("\33[93m- dataset_extractor.py\33[0m")
         print("  - extracting tweets to new dataset according to match files")

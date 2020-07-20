@@ -49,7 +49,7 @@ def single_list_generator():
 # returns:
 #   None
 # description:
-#   This function is called to run the file (by calling the
+#   This function is called to run the code in this file (by calling the
 #       single_list_generator() function) and generates console output to inform
 #       the user of its purpose, progress and output files (with file paths).
 def run():

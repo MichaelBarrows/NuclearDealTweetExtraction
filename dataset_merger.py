@@ -2,6 +2,16 @@ import dataset as ds
 import helpers
 import pandas as pd
 
+# merge()
+# parameters:
+#   dataset_type : string - type of dataset being merged (either generic or
+#       specific)
+# returns:
+#   : string - the path to the file that was created
+# description:
+#   This function retrieves the dataset and loads it into a dataframe. This is
+#       completed for each of the datasets, which are then concatenated together
+#       to create the new merged dataset which is stored.  
 def merge(dataset_type):
     print("      - Processing " + dataset_type + " files:")
     for file in ds.all_datasets:
@@ -19,7 +29,16 @@ def merge(dataset_type):
     helpers.dataframe_to_csv(merge_hold, output_path + file_name)
     return output_path + file_name
 
-
+# run()
+# parameters:
+#   None
+# returns:
+#   None
+# description:
+#   This function is called to run the code in this file (by calling the
+#       merge() function with either "generic" or "specific") and generates
+#       console output detailing the purpose of the file, its progress and
+#       output files created.
 def run():
     print("\33[93m- dataset_merger.py\33[0m")
     print("  - merging individual datasets to create large dataset")

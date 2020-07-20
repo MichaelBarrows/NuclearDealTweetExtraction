@@ -2,9 +2,27 @@ import helpers
 import dataset as ds
 import pandas as pd
 
+# keyword_splitter_to_list()
+# parameters:
+#   keyword : string - string containing the keyword phrase
+# returns:
+#   keyword : list - list consisting of each word in the original phrase
+# description:
+#   This function splits a string phrase into a list containing each word as
+#       an individual element
 def keyword_splitter_to_list(keyword):
-    return keyword.split()
+    keyword = keyword.split()
+    return keyword
 
+# load_tagged_keywords()
+# parameters:
+#   None
+# returns:
+#   tagged_keywords : DataFrame - dataframe with tagged keywords and their
+#       split equivalents
+# description:
+#   This function loads the tagged keywords into a dataframe, adds a column
+#       of split, which is populated with a list with each word as an element.
 def load_tagged_keywords():
     tagged_keywords = helpers.load_dataset(ds.output_data + "keywords/keywords_tagged.csv")
     tagged_keywords["split"] = ""
@@ -12,6 +30,16 @@ def load_tagged_keywords():
         tagged_keywords.split.at[index] = keyword_splitter_to_list(row.term)
     return tagged_keywords
 
+# find_match_files()
+# parameters:
+#   None
+# returns:
+#   matches_data_files : list - list with the paths and filenames of the match
+#       files
+# description:
+#   This function gets the paths and filenames of every file within the
+#       specified folder where the matches are located, creates a list with
+#       those file paths and returns it.
 def find_match_files():
     matches_data_files = {}
     matches_storage_path = ds.output_data + "individual_keyword_matches/"
@@ -24,9 +52,28 @@ def find_match_files():
             matches_data_files[path].append(f_path)
     return matches_data_files
 
+# load_match_file()
+# parameters:
+#   file : string - string containing the file path for retrieval
+# returns:
+#   file : DataFrame - dataframe with the contents of the file
+# description:
+#   This function loads the specified file into a dataframe and returns it.
 def load_match_file(file):
-    return helpers.load_dataset(file)
+    file = helpers.load_dataset(file)
+    return file
 
+# comparison()
+# parameters:
+#   matches : list - list of matches from single keyword matched
+#   keywords : list - list of keywords to compare against
+# returns
+#   True
+#       [OR]
+#   False
+# description:
+#   This function compares each match word to identify whether they form a
+#       keyword phrase (and therefore a match consisting of more than one word)
 def comparison(matches, keywords):
     counter = 0
     matched_keywords = []
@@ -39,6 +86,14 @@ def comparison(matches, keywords):
         return True
     return False
 
+# remove_duplicates()
+# parameters:
+#   match_list : list - list of matches including possible duplicates
+# returns:
+#   new_match_list : list - match list without duplicates
+# description:
+#   This function checks that a match keyword only occurs once in the list and
+#       adds it to a new list, skipping words that are already in the new list.
 def remove_duplicates(match_list):
     new_match_list = []
     for word in match_list:
@@ -46,6 +101,16 @@ def remove_duplicates(match_list):
             new_match_list.append(word)
     return new_match_list
 
+# processing()
+# parameters:
+#   None
+# returns:
+#   files_created : list - list of filenames that were created
+# description:
+#   This function corrects the matches by calling other functions to remove
+#       duplicates and compare whether actual matches were made from the single
+#       keyword matches. It also identifies them as either generic or specific
+#       matches, and output the new matches to a CSV file.
 def processing():
     tagged_keywords = load_tagged_keywords()
     match_files = find_match_files()
@@ -104,7 +169,15 @@ def processing():
     return files_created
     # print(new_store)
 
-
+# run()
+# parameters:
+#   None
+# returns:
+#   None
+# description:
+#   This function is called to run the code in this file (by calling the
+#       processing() function) and generates console output detailing the
+#       purpose of the file, its progress and output files created.
 def run():
     print("\33[93m- keyword_match_corrector.py\33[0m")
     print("  - creating actual matches and removing duplicates")

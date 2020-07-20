@@ -2,6 +2,14 @@ import helpers
 import dataset as ds
 import pandas as pd
 
+# date_selection()
+# parameters:
+#   None
+# returns:
+#   output_files : list - List of created files
+# description:
+#   This function retrieves the merged datasets and filters them by year. The
+#       filtered dataset is then output to a new CSV file.
 def date_selection():
     output_files = []
     path = ds.output_data + "merged_dataset_extraction/"
@@ -15,6 +23,15 @@ def date_selection():
         output_files.append(storage_path + file)
     return output_files
 
+# run()
+# parameters:
+#   None
+# returns:
+#   None
+# description:
+#   This function is called to run the code in this file (by calling the
+#       date_selection() function) and generates console output detailing the
+#       purpose of the file, its progress and output files created.
 def run():
     print("\33[93m- dataset_time_filtering.py\33[0m")
     print("  - extracting tweets for 2014/15/16/17/18")
