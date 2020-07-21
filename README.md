@@ -1,5 +1,5 @@
 <h1 style="margin:10px 0">Iranian Nuclear Deal Tweet Extraction</h1>
-<h2 style="margin:10px 0">Twitter Election Integrity Datasets</h2>
+<h2 style="margin:10px 0;text-decoration: none;">Twitter Election Integrity Datasets</h2>
 <hr style="margin:10px 0;padding:0;"/>
 
 This code is part of the research project titled "Iranian State-Sponsored Propaganda on Twitter: Exploring Methods for Automatic Classification and Analysis".
