@@ -1,4 +1,4 @@
-<h1 style="margin:10px 0">Iranian Nuclear Deal Tweet Extraction</h1>
+<h1>Iranian Nuclear Deal Tweet Extraction</h1>
 Twitter Election Integrity Datasets
 <hr style="margin:10px 0;padding:0;"/>
 
