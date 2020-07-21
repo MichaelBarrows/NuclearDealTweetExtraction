@@ -1,5 +1,5 @@
 <h1>Iranian Nuclear Deal Tweet Extraction</h1>
-<hr style="margin:10px 0;padding:0;"/>
+<!-- <hr style="margin:10px 0;padding:0;"/> -->
 
 This code is part of the research project titled "Iranian State-Sponsored Propaganda on Twitter: Exploring Methods for Automatic Classification and Analysis".
 
