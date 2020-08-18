@@ -13,7 +13,7 @@ freq_matrix = None
 raw_keyword_data = helpers.load_dataset(ds.output_data + "keywords/keywords_tagged.csv")
 generic_list = raw_keyword_data[raw_keyword_data.tag == "generic"].term.tolist()
 specific_list = raw_keyword_data[raw_keyword_data.tag == "specific"].term.tolist()
-years = ["2014", "2015", "2016", "2017", "2018"]
+years = ["2013", "2014", "2015", "2016", "2017", "2018"]
 
 # create_storage_dataframes()
 # parameters:
