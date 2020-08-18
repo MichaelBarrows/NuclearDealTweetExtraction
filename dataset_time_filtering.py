@@ -16,7 +16,14 @@ def date_selection():
     files = helpers.path_fetcher(path)
     for file in files:
         df = helpers.load_dataset(path + file)
+        df_2013 = df[df.year == 2013]
+        df_2013_8 = df_2013[df.month == 8]
+        df_2013_9 = df_2013[df.month == 9]
+        df_2013_10 = df_2013[df.month == 10]
+        df_2013_11 = df_2013[df.month == 11]
+        df_2013_12 = df_2013[df.month == 12]
         df = df[(df.year == 2014) | (df.year == 2015) | (df.year == 2016) | (df.year == 2017) | (df.year == 2018)]
+        df = pd.concat([df_2013_8, df_2013_9, df_2013_10, df_2013_11, df_2013_12, df])
         storage_path = ds.output_data + "time_filtered_dataset_extraction/"
         helpers.path_checker(storage_path)
         helpers.dataframe_to_csv(df, storage_path + file)
