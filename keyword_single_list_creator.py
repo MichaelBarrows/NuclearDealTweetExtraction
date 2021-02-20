@@ -33,7 +33,7 @@ def word_extractor(list_of_terms):
 #   The returned list of single keywords is transformed into a DataFrame and
 #       stored.
 def single_list_generator():
-    df = helpers.load_dataset(ds.output_data + "keywords/original_keywords.csv")
+    df = helpers.load_dataset("original_keywords.csv")
     list_of_terms = df.keywords.tolist()
     individual_terms = word_extractor(list_of_terms)
     list_df = pd.DataFrame(individual_terms, columns=["keyword"])
